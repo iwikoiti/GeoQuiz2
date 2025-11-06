@@ -68,7 +68,9 @@ fun GeoQuizScreen(modifier: Modifier = Modifier) {
     )
     {
         QuizText(message = currentQuestion.text, fontSize = 20f)
-        QuizText(message = "Score: $score", fontSize = 18f)
+        if (currentIndex == questions.lastIndex && answeredQuestions.contains(questions.last().id)) {
+            QuizText(message = "Score: $score", fontSize = 18f)
+        }
 
         Spacer(modifier = Modifier.height(50.dp))
 
@@ -102,19 +104,21 @@ fun GeoQuizScreen(modifier: Modifier = Modifier) {
             }
         }
         Spacer(modifier = Modifier.height(50.dp))
-        Row (
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End,
-            //modifier = Modifier.fillMaxWidth()
-        )
-        {
-            Button(
-                onClick = {
-                    currentIndex = (currentIndex + 1) % questions.size
-                },
-                modifier = Modifier.weight(1f)
-            ) {
-                QuizText(message = "→", fontSize = 16f)
+        if (currentIndex < questions.lastIndex) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                //modifier = Modifier.fillMaxWidth()
+            )
+            {
+                Button(
+                    onClick = {
+                        currentIndex++
+                    },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    QuizText(message = "→", fontSize = 16f)
+                }
             }
         }
     }
