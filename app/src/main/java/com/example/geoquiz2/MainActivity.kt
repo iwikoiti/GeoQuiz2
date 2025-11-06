@@ -71,35 +71,34 @@ fun GeoQuizScreen(modifier: Modifier = Modifier) {
         QuizText(message = "Score: $score", fontSize = 18f)
 
         Spacer(modifier = Modifier.height(50.dp))
-        Row (
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.fillMaxWidth()
-        )
-        {
-            Button(
-                onClick = {
-                    if (!answeredQuestions.contains(currentQuestion.id)) {
+
+        if (!answeredQuestions.contains(currentQuestion.id)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.fillMaxWidth()
+            )
+            {
+                Button(
+                    onClick = {
                         if (currentQuestion.answer) score++
                         answeredQuestions = answeredQuestions + currentQuestion.id
-                    }
-                },
-                modifier = Modifier.weight(1f)
-            ) {
-                QuizText(message = "True", fontSize = 16f)
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Button(
-                onClick = {
-                    if (!answeredQuestions.contains(currentQuestion.id)) {
-                        if (!currentQuestion.answer) score++
-                        answeredQuestions = answeredQuestions + currentQuestion.id
-                    }
-                },
-                modifier = Modifier.weight(1f)
+                    },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    QuizText(message = "True", fontSize = 16f)
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Button(
+                    onClick = {
+                            if (!currentQuestion.answer) score++
+                            answeredQuestions = answeredQuestions + currentQuestion.id
+                    },
+                    modifier = Modifier.weight(1f)
 
-            ) {
-                QuizText(message = "False", fontSize = 16f)
+                ) {
+                    QuizText(message = "False", fontSize = 16f)
+                }
             }
         }
         Spacer(modifier = Modifier.height(50.dp))
