@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -55,7 +56,8 @@ fun GeoQuizScreen(modifier: Modifier = Modifier) {
     val questions = remember { QuizRepository.getQuestions() }
     var currentIndex by remember { mutableStateOf(0) }
     val currentQuestion = questions[currentIndex]
-
+    var score by remember { mutableStateOf(0) }
+    var answeredQuestions by remember { mutableStateOf(setOf<Int>()) }
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -66,6 +68,8 @@ fun GeoQuizScreen(modifier: Modifier = Modifier) {
     )
     {
         QuizText(message = currentQuestion.text, fontSize = 20f)
+        QuizText(message = "Score: $score", fontSize = 18f)
+
         Spacer(modifier = Modifier.height(50.dp))
         Row (
             verticalAlignment = Alignment.CenterVertically,
@@ -75,20 +79,43 @@ fun GeoQuizScreen(modifier: Modifier = Modifier) {
         {
             Button(
                 onClick = {
-
+                    if (!answeredQuestions.contains(currentQuestion.id)) {
+                        if (currentQuestion.answer) score++
+                        answeredQuestions = answeredQuestions + currentQuestion.id
+                    }
                 },
                 modifier = Modifier.weight(1f)
             ) {
-                Text("True")
+                QuizText(message = "True", fontSize = 16f)
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
                 onClick = {
+                    if (!answeredQuestions.contains(currentQuestion.id)) {
+                        if (!currentQuestion.answer) score++
+                        answeredQuestions = answeredQuestions + currentQuestion.id
+                    }
+                },
+                modifier = Modifier.weight(1f)
 
+            ) {
+                QuizText(message = "False", fontSize = 16f)
+            }
+        }
+        Spacer(modifier = Modifier.height(50.dp))
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+            //modifier = Modifier.fillMaxWidth()
+        )
+        {
+            Button(
+                onClick = {
+                    currentIndex = (currentIndex + 1) % questions.size
                 },
                 modifier = Modifier.weight(1f)
             ) {
-                Text("False")
+                QuizText(message = "→", fontSize = 16f)
             }
         }
     }
