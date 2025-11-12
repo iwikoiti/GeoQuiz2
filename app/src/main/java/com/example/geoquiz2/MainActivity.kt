@@ -62,49 +62,66 @@ fun GeoQuizScreen(modifier: Modifier = Modifier) {
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = Arrangement.SpaceAround,
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 250.dp, start = 16.dp, end = 16.dp)
+            .padding(start = 16.dp, end = 16.dp)
     )
     {
-        QuizText(message = currentQuestion.text, fontSize = 20f)
-        if (currentIndex == questions.lastIndex && answeredQuestions.contains(questions.last().id)) {
-            QuizText(message = "Score: $score", fontSize = 18f)
+        OutlinedButton(
+            onClick = {
+                currentIndex = 0
+                score = 0
+                answeredQuestions = setOf()
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Reset")
         }
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ){
+            QuizText(message = currentQuestion.text, fontSize = 20f)
+            if (currentIndex == questions.lastIndex && answeredQuestions.contains(questions.last().id)) {
+                QuizText(message = "Score: $score", fontSize = 18f)
+            }
 
-        if (!answeredQuestions.contains(currentQuestion.id)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxWidth()
-            )
-            {
-                Button(
-                    onClick = {
-                        if (currentQuestion.answer) score++
-                        answeredQuestions = answeredQuestions + currentQuestion.id
-                    },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    QuizText(message = "True", fontSize = 16f)
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-                Button(
-                    onClick = {
+            Spacer(modifier = Modifier.height(50.dp))
+
+            if (!answeredQuestions.contains(currentQuestion.id)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                {
+                    Button(
+                        onClick = {
+                            if (currentQuestion.answer) score++
+                            answeredQuestions = answeredQuestions + currentQuestion.id
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        QuizText(message = "True", fontSize = 16f)
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(
+                        onClick = {
                             if (!currentQuestion.answer) score++
                             answeredQuestions = answeredQuestions + currentQuestion.id
-                    },
-                    modifier = Modifier.weight(1f)
+                        },
+                        modifier = Modifier.weight(1f)
 
-                ) {
-                    QuizText(message = "False", fontSize = 16f)
+                    ) {
+                        QuizText(message = "False", fontSize = 16f)
+                    }
                 }
             }
         }
-        Spacer(modifier = Modifier.height(50.dp))
+        //Spacer(modifier = Modifier.height(50.dp))
         if (currentIndex < questions.lastIndex) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -121,17 +138,6 @@ fun GeoQuizScreen(modifier: Modifier = Modifier) {
                     QuizText(message = "→", fontSize = 16f)
                 }
             }
-        }
-
-        OutlinedButton(
-            onClick = {
-                currentIndex = 0
-                score = 0
-                answeredQuestions = setOf()
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Reset")
         }
     }
 }
