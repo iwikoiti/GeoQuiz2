@@ -76,7 +76,7 @@ fun GeoQuizScreen(modifier: Modifier = Modifier) {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Reset")
+           QuizText(message = "Reset", fontSize = 16f)
         }
 
         Column(
